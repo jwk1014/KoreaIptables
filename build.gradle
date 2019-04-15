@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'com.devwon.koreaiptables'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-jaxb:2.5.0'
+
+    testCompile 'junit:junit:4.12'
+}
