@@ -8,8 +8,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jaxb.JaxbConverterFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     static List<Integer> ACCEPT_PORTS = Arrays.asList(22,80,443,3000,8443);
@@ -33,7 +35,25 @@ public class Main {
 
                 IPASxml ipasxml = response.body();
 
-                for(Ipv4 ipv4 : ipasxml.getIplist()) {
+                List<Ipv4> sortedList = ipasxml.getIplist().stream().sorted().collect(Collectors.toList());
+                List<Ipv4> list = new ArrayList<>();
+                Ipv4 tmp = null;
+                for(Ipv4 ipv4 : sortedList) {
+                    if(tmp == null)
+                        list.add(tmp = ipv4);
+                    else {
+                        if(tmp.isConnectable(ipv4) != 1)
+                            list.add(tmp = ipv4);
+                        else
+                            tmp.connect(ipv4);
+                    }
+                }
+
+                System.out.println();
+                System.out.println("count : "+list.size());
+                System.out.println();
+
+                for(Ipv4 ipv4 : list) {
                     System.out.println(
                             String.format("-A INPUT -m iprange --src-range %s-%s -p tcp -m tcp -m multiport --dports %s -j ACCEPT",
                                     ipv4.getSno(),
