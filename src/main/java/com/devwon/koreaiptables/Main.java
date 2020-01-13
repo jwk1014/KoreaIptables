@@ -49,10 +49,6 @@ public class Main {
                     }
                 }
 
-                System.out.println();
-                System.out.println("count : "+list.size());
-                System.out.println();
-
                 for(Ipv4 ipv4 : list) {
                     System.out.println(
                             String.format("-A INPUT -m iprange --src-range %s-%s -p tcp -m tcp -m multiport --dports %s -j ACCEPT",
@@ -66,6 +62,10 @@ public class Main {
                             )
                     );
                 }
+
+                System.out.println();
+                System.out.println("count : "+list.size());
+                System.out.println();
             }
 
             @Override
